@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Reminder Application</string>
+    <string name="event_title_label">Title</string>
+    <string name="event_title_hint">Enter a title</string>
+    <string name="event_details_label">Enter your message here</string>
+    <string name="event_contact_text">Choose a Contact</string>
+    <string name="event_message_text">Send Message</string>
 </resources>
