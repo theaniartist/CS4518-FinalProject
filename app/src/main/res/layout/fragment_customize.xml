@@ -62,14 +62,6 @@
         android:text="@string/event_details_label" />
 
     <Button
-        android:id="@+id/event_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#EEC5F5"
-        android:textColor="@color/black"
-        tools:text="Choose a Date to send you message" />
-
-    <Button
         android:id="@+id/event_contact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
