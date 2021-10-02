@@ -74,6 +74,7 @@ class CardListFragment : Fragment() {
 
         private lateinit var card: Card
         private val titleTextView: TextView = itemView.findViewById(R.id.card_title)
+        val descTextView: TextView = itemView.findViewById(R.id.card_description)
         //private val cardImageView: ImageView = itemView.findViewById(R.id.card_image)
 
         init {
@@ -83,6 +84,8 @@ class CardListFragment : Fragment() {
         fun bind(card: Card) {
             this.card = card
             titleTextView.text = this.card.title
+            descTextView.text = this.card.desc
+
             /*cardImageView.visibility = if (card.isSelected) {
                 View.VISIBLE
             } else {
@@ -109,6 +112,7 @@ class CardListFragment : Fragment() {
         override fun getItemCount() = cards.size
 
         override fun onBindViewHolder(holder: CardHolder, position: Int) {
+            holder.setIsRecyclable(false)
             val card = cards[position]
             holder.bind(card)
         }

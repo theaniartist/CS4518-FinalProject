@@ -23,19 +23,20 @@ class CardRepository private constructor(context: Context){
     private val executor = Executors.newSingleThreadExecutor()
     private val filesDir = context.applicationContext.filesDir
 
-    fun getCards(): LiveData<List<Card>> = cardDao.getCards()
-
-    fun getCard(id: UUID): LiveData<Card?> = cardDao.getCard(id)
+    fun addCard(card: Card) {
+        executor.execute {cardDao.addCard(card)}
+    }
 
     fun updateCard(card: Card) {
         executor.execute {cardDao.updateCard(card)}
     }
 
+    fun getCards(): LiveData<List<Card>> = cardDao.getCards()
+
+    fun getCard(id: UUID): LiveData<Card?> = cardDao.getCard(id)
+
     fun getPhotoFile(card: Card): File = File(filesDir, card.photoFileName)
 
-    fun addCard(card: Card) {
-        executor.execute {cardDao.addCard(card)}
-    }
     companion object {
         private var INSTANCE: CardRepository? = null
 

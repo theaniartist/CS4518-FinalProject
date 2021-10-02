@@ -8,8 +8,8 @@ import java.util.*
 data class Card (@PrimaryKey val id: UUID = UUID.randomUUID(),
                  var title: String = "",
                  var desc: String = "",
-                 var recipient: String = "",
-                 var message: String = "") {
+                 var message: String = "",
+                 var recipient: String = "") {
 
     val photoFileName
         get() = "IMG_$id.jpg"

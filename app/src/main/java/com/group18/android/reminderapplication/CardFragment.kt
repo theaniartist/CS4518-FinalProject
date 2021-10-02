@@ -1,6 +1,5 @@
 package com.group18.android.reminderapplication
 
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
@@ -32,6 +31,7 @@ class CardFragment : Fragment() {
     private lateinit var photoFile: File
     private var photoUri: Uri? = null
     private lateinit var titleField: EditText
+    private lateinit var descField: TextView
     private lateinit var messageField: EditText
     private lateinit var contactButton: Button
     private lateinit var photoButton: ImageButton
@@ -46,7 +46,7 @@ class CardFragment : Fragment() {
         card = Card()
         val cardId: UUID = arguments?.getSerializable(ARG_CARD_ID) as UUID
         cardViewModel.loadCard(cardId)
-        Log.d(TAG, "args bundle card ID: $cardId")
+        Log.d(TAG, "onCreate() called")
     }
 
     override fun onCreateView(
@@ -56,18 +56,21 @@ class CardFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_card, container, false)
 
-        titleField = view.findViewById(R.id.card_title) as EditText
-        messageField = view.findViewById(R.id.card_detail) as EditText
+        titleField = view.findViewById(R.id.card_title_edit) as EditText
+        descField = view.findViewById(R.id.card_description) as TextView
+        messageField = view.findViewById(R.id.card_message_edit) as EditText
         contactButton = view.findViewById(R.id.card_contact) as Button
         photoButton = view.findViewById(R.id.card_camera) as ImageButton
         photoView = view.findViewById(R.id.card_photo) as ImageView
+
+        Log.d(TAG, "onCreateView() called")
 
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Log.d(TAG, "onViewCreated() called")
         cardViewModel.cardLiveData.observe(viewLifecycleOwner, { card ->
             card?.let {
                 this.card = card
@@ -78,7 +81,6 @@ class CardFragment : Fragment() {
                     "com.group18.android.reminderapplication.fileprovider",
                     photoFile
                 )
-
                 updateUI()
             }
         })
@@ -86,6 +88,7 @@ class CardFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        Log.d(TAG, "onStart() called")
         val titleWatcher = object : TextWatcher {
             override fun beforeTextChanged(
                 sequence: CharSequence?,
@@ -95,7 +98,6 @@ class CardFragment : Fragment() {
             ) {
                 // This space intentionally left blank
             }
-
             override fun onTextChanged(
                 sequence: CharSequence?,
                 start: Int,
@@ -104,13 +106,12 @@ class CardFragment : Fragment() {
             ) {
                 card.title = sequence.toString()
             }
-
             override fun afterTextChanged(sequence: Editable?) {
                 // This one too
             }
         }
 
-        val messageWatcher = object: TextWatcher {
+        val messageWatcher = object : TextWatcher {
             override fun beforeTextChanged(
                 sequence: CharSequence?,
                 start: Int,
@@ -119,20 +120,19 @@ class CardFragment : Fragment() {
             ) {
                 // This space intentionally left blank
             }
-
             override fun onTextChanged(
                 sequence: CharSequence?,
                 start: Int,
                 before: Int,
                 count: Int
             ) {
-               card.message = sequence.toString()
+                card.message = sequence.toString()
             }
-
             override fun afterTextChanged(sequence: Editable?) {
                 // This one too
             }
         }
+
         titleField.addTextChangedListener(titleWatcher)
         messageField.addTextChangedListener(messageWatcher)
 
@@ -209,10 +209,12 @@ class CardFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         Log.d(TAG, "onStop() called")
+        cardViewModel.saveCard(card)
     }
 
     override fun onDetach() {
         super.onDetach()
+        Log.d(TAG, "onDetach() called")
         requireActivity().revokeUriPermission(photoUri,
             Intent.FLAG_GRANT_WRITE_URI_PERMISSION
         )
@@ -220,6 +222,8 @@ class CardFragment : Fragment() {
 
     private fun updateUI() {
         titleField.setText(card.title)
+        descField.text = card.desc
+        messageField.setText(card.message)
 
         if (card.recipient.isNotEmpty()) {
             contactButton.text = card.recipient
