@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="16dp"
@@ -19,7 +18,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/event_photo"
+                android:id="@+id/card_photo"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:background="@android:color/darker_gray"
@@ -27,7 +26,7 @@
                 android:scaleType="centerInside" />
 
             <ImageButton
-                android:id="@+id/event_camera"
+                android:id="@+id/card_camera"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@android:drawable/ic_menu_camera" />
@@ -43,13 +42,13 @@
                 style="?android:listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/event_title_label" />
+                android:text="@string/card_title_label" />
 
             <EditText
-                android:id="@+id/event_title"
+                android:id="@+id/card_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/event_title_hint" />
+                android:hint="@string/card_title_hint" />
         </LinearLayout>
     </LinearLayout>
 
@@ -59,22 +58,22 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:text="@string/event_details_label" />
+        android:text="@string/card_details_label" />
 
     <Button
-        android:id="@+id/event_contact"
+        android:id="@+id/card_contact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:backgroundTint="#BAB4EE"
-        android:text="@string/event_contact_text"
+        android:text="@string/card_contact_text"
         android:textColor="@color/black" />
 
     <Button
-        android:id="@+id/event_message"
+        android:id="@+id/card_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="#9ADDFF"
-        android:text="@string/event_message_text"
+        android:text="@string/card_message_text"
         android:textColor="@color/black" />
 </LinearLayout>
