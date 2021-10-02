@@ -5,8 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:id="@+id/linearLayout2">
+    android:padding="8dp" >
 
     <TextView
         android:id="@+id/card_title"
