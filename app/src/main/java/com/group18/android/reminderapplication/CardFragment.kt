@@ -24,6 +24,8 @@ private const val TAG = "CardFragment"
 private const val ARG_CARD_ID = "card_id"
 private const val REQUEST_CONTACT = 0
 private const val REQUEST_PHOTO = 1
+private const val REQUEST_CODE_CHAT = 2
+
 
 class CardFragment : Fragment() {
 
@@ -34,6 +36,7 @@ class CardFragment : Fragment() {
     private lateinit var descField: TextView
     private lateinit var messageField: EditText
     private lateinit var contactButton: Button
+    private lateinit var sendButton: Button
     private lateinit var photoButton: ImageButton
     private lateinit var photoView: ImageView
 
@@ -60,6 +63,7 @@ class CardFragment : Fragment() {
         descField = view.findViewById(R.id.card_description) as TextView
         messageField = view.findViewById(R.id.card_message_edit) as EditText
         contactButton = view.findViewById(R.id.card_contact) as Button
+        sendButton = view.findViewById(R.id.card_send) as Button
         photoButton = view.findViewById(R.id.card_camera) as ImageButton
         photoView = view.findViewById(R.id.card_photo) as ImageView
 
@@ -143,6 +147,11 @@ class CardFragment : Fragment() {
             setOnClickListener {
                 startActivityForResult(pickContactIntent, REQUEST_CONTACT)
             }
+        }
+
+        sendButton.setOnClickListener {
+            val intent = Intent(this@CardFragment.context, ChatActivity::class.java)
+            startActivityForResult(intent, REQUEST_CODE_CHAT)
         }
 
         photoButton.apply {
