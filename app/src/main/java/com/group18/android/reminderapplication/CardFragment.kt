@@ -3,11 +3,16 @@ package com.group18.android.reminderapplication
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import java.util.*
+
+private const val TAG = "CardFragment"
+private const val ARG_CARD_ID = "card_id"
 
 class CardFragment : Fragment() {
 
@@ -17,6 +22,8 @@ class CardFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         card = Card()
+        val cardId: UUID = arguments?.getSerializable(ARG_CARD_ID) as UUID
+        Log.d(TAG, "args bundle card ID: $cardId")
     }
 
     override fun onCreateView(
@@ -57,5 +64,16 @@ class CardFragment : Fragment() {
             }
         }
         titleField.addTextChangedListener(titleWatcher)
+    }
+
+    companion object {
+        fun newInstance(cardId: UUID): CardFragment {
+            val args = Bundle().apply {
+                putSerializable(ARG_CARD_ID, cardId)
+            }
+            return CardFragment().apply {
+                arguments = args
+            }
+        }
     }
 }

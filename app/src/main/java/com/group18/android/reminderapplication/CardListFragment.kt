@@ -1,26 +1,40 @@
 package com.group18.android.reminderapplication
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.util.*
 
 private const val TAG = "CardListFragment"
 
 class CardListFragment : Fragment() {
+
+    interface Callbacks {
+        fun onCardSelected(cardId: UUID)
+    }
+
+    private var callbacks: Callbacks? = null
 
     private lateinit var cardRecyclerView: RecyclerView
     private var adapter: CardAdapter? = null
 
     private val cardListViewModel: CardListViewModel by lazy {
         ViewModelProviders.of(this).get(CardListViewModel::class.java)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks = context as Callbacks?
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,8 +66,10 @@ class CardListFragment : Fragment() {
 
     private inner class CardHolder(view: View) : RecyclerView.ViewHolder(view),
     View.OnClickListener {
+
         private lateinit var card: Card
         private val titleTextView: TextView = itemView.findViewById(R.id.card_title)
+        //private val cardImageView: ImageView = itemView.findViewById(R.id.card_image)
 
         init {
             itemView.setOnClickListener(this)
@@ -62,11 +78,17 @@ class CardListFragment : Fragment() {
         fun bind(card: Card) {
             this.card = card
             titleTextView.text = this.card.title
+            /*cardImageView.visibility = if (card.isSelected) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }*/
         }
 
         override fun onClick(v: View) {
             Toast.makeText(context, "${card.title} pressed!", Toast.LENGTH_SHORT)
                 .show()
+            callbacks?.onCardSelected(card.id)
         }
 
     }
@@ -85,6 +107,11 @@ class CardListFragment : Fragment() {
             val card = cards[position]
             holder.bind(card)
         }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks = null
     }
 
     companion object {
