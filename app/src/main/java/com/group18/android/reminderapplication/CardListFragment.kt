@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.Observer
 import java.util.*
 
 private const val TAG = "CardListFragment"
@@ -26,7 +27,7 @@ class CardListFragment : Fragment() {
     private var callbacks: Callbacks? = null
 
     private lateinit var cardRecyclerView: RecyclerView
-    private var adapter: CardAdapter? = null
+    private var adapter: CardAdapter? = CardAdapter(emptyList())
 
     private val cardListViewModel: CardListViewModel by lazy {
         ViewModelProviders.of(this).get(CardListViewModel::class.java)
@@ -35,11 +36,6 @@ class CardListFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callbacks = context as Callbacks?
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "Total card:  ${cardListViewModel.cards.size}")
     }
 
     override fun onCreateView(
@@ -52,14 +48,23 @@ class CardListFragment : Fragment() {
         cardRecyclerView =
             view.findViewById(R.id.card_recycler_view) as RecyclerView
         cardRecyclerView.layoutManager = LinearLayoutManager(context)
-
-        updateUI()
+        cardRecyclerView.adapter = adapter
 
         return view
     }
 
-    private fun updateUI() {
-        val cards = cardListViewModel.cards
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        cardListViewModel.cardListLiveData.observe(viewLifecycleOwner,
+            Observer { cards ->
+                cards?.let {
+                    Log.i(TAG, "Got cards ${cards.size}")
+                    updateUI(cards)
+                }
+            })
+    }
+
+    private fun updateUI(cards: List<Card>) {
         adapter = CardAdapter(cards)
         cardRecyclerView.adapter = adapter
     }
