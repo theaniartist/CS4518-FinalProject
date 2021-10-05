@@ -70,12 +70,12 @@ class CardListFragment : Fragment() {
     }
 
     private inner class CardHolder(view: View) : RecyclerView.ViewHolder(view),
-    View.OnClickListener {
+        View.OnClickListener {
 
         private lateinit var card: Card
         private val titleTextView: TextView = itemView.findViewById(R.id.card_title)
         val descTextView: TextView = itemView.findViewById(R.id.card_description)
-        //private val cardImageView: ImageView = itemView.findViewById(R.id.card_image)
+        private val cardImageView: ImageView = itemView.findViewById(R.id.card_image)
 
         init {
             itemView.setOnClickListener(this)
@@ -86,11 +86,36 @@ class CardListFragment : Fragment() {
             titleTextView.text = this.card.title
             descTextView.text = this.card.desc
 
-            /*cardImageView.visibility = if (card.isSelected) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }*/
+            when {
+                titleTextView.text.toString() == "Happy Birthday Card" -> {
+                    cardImageView.setImageResource(R.drawable.ic_birthday)
+                }
+                titleTextView.text.toString() == "Happy Anniversary Card" -> {
+                    cardImageView.setImageResource(R.drawable.ic_anniversary)
+                }
+                titleTextView.text.toString() == "Graduation Card" -> {
+                    cardImageView.setImageResource(R.drawable.ic_grad)
+                }
+                titleTextView.text.toString() == "Christmas Card" -> {
+                    cardImageView.setImageResource(R.drawable.ic_christmas)
+                }
+                titleTextView.text.toString() == "Happy New Year's Card" -> {
+                    cardImageView.setImageResource(R.drawable.ic_firework)
+                }
+                titleTextView.text.toString() == "Happy Mother's Day Card" -> {
+                    cardImageView.setImageResource(R.drawable.ic_mom)
+                }
+                titleTextView.text.toString() == "Happy Father's Day Card" -> {
+                    cardImageView.setImageResource(R.drawable.ic_dad)
+                }
+                titleTextView.text.toString() == "Valentine's Day Card" -> {
+                    cardImageView.setImageResource(R.drawable.ic_heart)
+                }
+                titleTextView.text.toString() == "Wedding Card" -> {
+                    cardImageView.setImageResource(R.drawable.ic_ring)
+                }
+                else -> {cardImageView.setImageResource(R.drawable.ic_halloween)}
+            }
         }
 
         override fun onClick(v: View) {
@@ -101,14 +126,14 @@ class CardListFragment : Fragment() {
 
     }
 
-    private inner class CardAdapter(var cards: List<Card>)
-        : RecyclerView.Adapter<CardHolder>() {
+    private inner class CardAdapter(var cards: List<Card>) : RecyclerView.Adapter<CardHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
                 : CardHolder {
             val view = layoutInflater.inflate(R.layout.list_item_card, parent, false)
             return CardHolder(view)
         }
+
         override fun getItemCount() = cards.size
 
         override fun onBindViewHolder(holder: CardHolder, position: Int) {

@@ -16,7 +16,7 @@
         android:layout_marginEnd="8dp"
         android:text="Card Title"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/hbd_icon"
+        app:layout_constraintEnd_toStartOf="@+id/card_image"
         app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -33,14 +33,14 @@
         android:layout_marginBottom="8dp"
         android:text="Card Description"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/hbd_icon"
+        app:layout_constraintEnd_toStartOf="@+id/card_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_title"
         tools:layout_conversion_absoluteHeight="19dp"
         tools:layout_conversion_absoluteWidth="395dp" />
 
     <ImageView
-        android:id="@+id/hbd_icon"
+        android:id="@+id/card_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -49,5 +49,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_hbd" />
+        app:srcCompat="@drawable/ic_birthday" />
 </androidx.constraintlayout.widget.ConstraintLayout>
