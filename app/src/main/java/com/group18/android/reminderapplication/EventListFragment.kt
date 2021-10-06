@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.Observer
 import java.util.*
 
 private const val TAG = "EventListFragment"
@@ -19,16 +20,12 @@ private const val REQUEST_CARD = 0
 class EventListFragment : Fragment() {
 
     private lateinit var eventRecyclerView: RecyclerView
-    private var adapter: EventAdapter? = null
+    private var adapter: EventAdapter? = EventAdapter(emptyList())
 
     private val eventListViewModel: EventListViewModel by lazy {
         ViewModelProviders.of(this).get(EventListViewModel::class.java)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "Total crimes: ${eventListViewModel.events.size}")
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,14 +36,24 @@ class EventListFragment : Fragment() {
         eventRecyclerView =
             view.findViewById(R.id.event_recycler_view) as RecyclerView
         eventRecyclerView.layoutManager = LinearLayoutManager(context)
-
-        updateUI()
+        eventRecyclerView.adapter = adapter
 
         return view
     }
 
-    private fun updateUI() {
-        val events = eventListViewModel.events
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        eventListViewModel.eventListLiveData.observe(
+            viewLifecycleOwner,
+            Observer { events ->
+                events?.let {
+                    Log.i(TAG, "Got events ${events.size}")
+                    updateUI(events)
+                }
+            })
+    }
+
+    private fun updateUI(events: List<Event>) {
         adapter = EventAdapter(events)
         eventRecyclerView.adapter = adapter
     }
