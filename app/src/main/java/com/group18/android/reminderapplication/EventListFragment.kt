@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -63,8 +64,9 @@ class EventListFragment : Fragment() {
 
         private lateinit var event: Event
 
-        val titleTextView: TextView = itemView.findViewById(R.id.event_title)
-        val dateTextView = itemView.findViewById<TextView>(R.id.event_date)
+        private val titleTextView: TextView = itemView.findViewById(R.id.event_title)
+        private val dateTextView: TextView = itemView.findViewById(R.id.event_date)
+        private val eventImageView:ImageView = itemView.findViewById(R.id.event_view)
 
         init {
             itemView.setOnClickListener(this)
@@ -79,6 +81,7 @@ class EventListFragment : Fragment() {
         override fun onClick(v: View) {
             val intent = Intent(this@EventListFragment.context, SubActivity::class.java)
             startActivityForResult(intent, REQUEST_CARD)
+            eventImageView.setImageResource(R.drawable.ic_check)
         }
     }
 
