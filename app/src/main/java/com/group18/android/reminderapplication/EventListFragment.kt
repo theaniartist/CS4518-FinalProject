@@ -1,11 +1,10 @@
 package com.group18.android.reminderapplication
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -20,6 +19,11 @@ private const val REQUEST_CARD = 0
 
 class EventListFragment : Fragment() {
 
+    interface Callbacks {
+        fun onEventSelected(eventId: UUID)
+    }
+    private var callbacks: Callbacks? = null
+
     private lateinit var eventRecyclerView: RecyclerView
     private var adapter: EventAdapter? = EventAdapter(emptyList())
 
@@ -27,6 +31,16 @@ class EventListFragment : Fragment() {
         ViewModelProviders.of(this).get(EventListViewModel::class.java)
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks = context as Callbacks?
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,6 +68,28 @@ class EventListFragment : Fragment() {
             })
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        callbacks = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fragment_event_list, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.new_event -> {
+                val event = Event()
+                eventListViewModel.addEvent(event)
+                callbacks?.onEventSelected(event.id)
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun updateUI(events: List<Event>) {
         adapter = EventAdapter(events)
         eventRecyclerView.adapter = adapter
@@ -79,9 +115,9 @@ class EventListFragment : Fragment() {
         }
 
         override fun onClick(v: View) {
+            eventImageView.setImageResource(R.drawable.ic_check)
             val intent = Intent(this@EventListFragment.context, SubActivity::class.java)
             startActivityForResult(intent, REQUEST_CARD)
-            eventImageView.setImageResource(R.drawable.ic_check)
         }
     }
 

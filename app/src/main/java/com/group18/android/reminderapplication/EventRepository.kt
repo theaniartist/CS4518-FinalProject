@@ -24,6 +24,12 @@ class EventRepository private constructor(context: Context) {
 
     fun getEvent(id: UUID): LiveData<Event?> = eventDao.getEvent(id)
 
+
+    fun updateEvent(event: Event) {
+        executor.execute {eventDao.updateEvent(event)
+        }
+    }
+
     fun addEvent(event: Event) {
         executor.execute {eventDao.addEvent(event)}
     }

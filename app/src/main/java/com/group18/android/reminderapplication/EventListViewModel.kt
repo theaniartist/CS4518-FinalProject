@@ -16,6 +16,10 @@ class EventListViewModel :ViewModel() {
         //generateDataset()
     }
 
+    fun addEvent(event: Event) {
+        eventRepository.addEvent(event)
+    }
+
     private fun generateDataset() {
         val arrayTitle = arrayOf("Birthday", "Anniversary",
             "Graduation", "Christmas", "New Year's", "Mother's Day",

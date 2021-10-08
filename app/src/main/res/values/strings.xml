@@ -6,4 +6,9 @@
     <string name="card_details_label">Enter your message here</string>
     <string name="card_contact_text">Choose a Contact</string>
     <string name="card_message_text">Send Message</string>
+    <string name="event_title_label">Title</string>
+    <string name="event_title_edit">Enter a title</string>
+    <string name="event_date_text">Choose a date</string>
+    <string name="event_select">Select a Card</string>
+    <string name="new_event">New Event</string>
 </resources>
