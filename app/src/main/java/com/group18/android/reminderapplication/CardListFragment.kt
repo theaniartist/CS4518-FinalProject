@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.Observer
+import com.group18.android.reminderapplication.model.Card
 import java.util.*
 
 private const val TAG = "CardListFragment"
@@ -55,13 +56,14 @@ class CardListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        cardListViewModel.cardListLiveData.observe(viewLifecycleOwner,
-            Observer { cards ->
-                cards?.let {
-                    Log.i(TAG, "Got cards ${cards.size}")
-                    updateUI(cards)
-                }
-            })
+        // TODO: This needs to be changed to work with Firebase
+//        cardListViewModel.cardListLiveData.observe(viewLifecycleOwner,
+//            Observer { cards ->
+//                cards?.let {
+//                    Log.i(TAG, "Got cards ${cards.size}")
+//                    updateUI(cards)
+//                }
+//            })
     }
 
     private fun updateUI(cards: List<Card>) {

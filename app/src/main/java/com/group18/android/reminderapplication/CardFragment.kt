@@ -17,6 +17,7 @@ import android.widget.*
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.group18.android.reminderapplication.model.Card
 import java.io.File
 import java.util.*
 

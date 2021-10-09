@@ -8,4 +8,11 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
     }
+
+    companion object {
+        private const val TAG = "ChatActivity"
+        const val MESSAGES_CHILD = "messages"
+        const val ANONYMOUS = "anonymous"
+        private const val LOADING_IMAGE_URL = "https://www.google.com/images/spin-32.gif"
+    }
 }

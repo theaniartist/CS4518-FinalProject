@@ -3,9 +3,8 @@ package com.group18.android.reminderapplication
 import androidx.lifecycle.ViewModel
 
 class CardListViewModel : ViewModel() {
-
-    private val cardRepository = CardRepository.get()
-    val cardListLiveData = cardRepository.getCards()
+//    private val cardRepository = CardRepository.get()
+//    val cardListLiveData = cardRepository.getCards()
 
     //Only using this dummy database for now before switching over to non-relational DB
     init {
@@ -21,7 +20,7 @@ class CardListViewModel : ViewModel() {
         for (i in arrayTitle.indices) {
             val titleName = arrayTitle[i]
             val desc = generateDesc(titleName)
-            cardRepository.addCard(Card(title = titleName, desc = "Description: $desc"))
+//            cardRepository.addCard(Card(title = titleName, desc = "Description: $desc"))
         }
     }
 
