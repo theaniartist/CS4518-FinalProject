@@ -101,6 +101,7 @@ class EventListFragment : Fragment() {
         private lateinit var event: Event
 
         private val titleTextView: TextView = itemView.findViewById(R.id.event_title)
+        private val emailTextView: TextView = itemView.findViewById(R.id.event_email)
         private val dateTextView: TextView = itemView.findViewById(R.id.event_date)
         private val eventImageView:ImageView = itemView.findViewById(R.id.event_view)
 
@@ -111,6 +112,7 @@ class EventListFragment : Fragment() {
         fun bind(event: Event) {
             this.event = event
             titleTextView.text = this.event.title
+            emailTextView.text = this.event.email
             dateTextView.text = this.event.date.toString()
         }
 

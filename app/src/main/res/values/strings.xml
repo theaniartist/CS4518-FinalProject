@@ -11,4 +11,6 @@
     <string name="event_date_text">Choose a date</string>
     <string name="event_select">Select a Card</string>
     <string name="new_event">New Event</string>
+    <string name="event_email_label">Person\'s email address for event:</string>
+    <string name="event_email_edit">Enter an email address</string>
 </resources>

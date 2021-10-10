@@ -14,6 +14,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/event_title_edit"/>
+    <TextView
+        style="?android:listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/event_email_label"/>
+    <EditText
+        android:id="@+id/event_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/event_email_edit"/>
     <Button
         android:id="@+id/event_date_button"
         android:layout_width="match_parent"

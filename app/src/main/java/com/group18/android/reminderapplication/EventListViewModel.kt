@@ -28,7 +28,7 @@ class EventListViewModel :ViewModel() {
         for (i in arrayTitle.indices) {
             val titleName = arrayTitle[i]
             val date = generateDate(titleName)
-            eventRepository.addEvent(Event(title = titleName, date = date))
+            eventRepository.addEvent(Event(title = titleName, email="", date = date))
         }
     }
 

@@ -2,12 +2,15 @@ package com.group18.android.reminderapplication
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import java.util.*
@@ -21,6 +24,7 @@ class EventFragment :Fragment(), DatePickerFragment.Callbacks {
 
     private lateinit var event: Event
     private lateinit var titleField: EditText
+    private lateinit var emailField: EditText
     private lateinit var dateButton: Button
 
     private val eventViewModel: EventViewModel by lazy {
@@ -42,6 +46,7 @@ class EventFragment :Fragment(), DatePickerFragment.Callbacks {
         val view = inflater.inflate(R.layout.fragment_event, container, false)
 
         titleField = view.findViewById(R.id.event_title_edit) as EditText
+        emailField = view.findViewById(R.id.event_email) as EditText
         dateButton = view.findViewById(R.id.event_date_button) as Button
 
         return view
@@ -64,7 +69,34 @@ class EventFragment :Fragment(), DatePickerFragment.Callbacks {
                 before: Int,
                 count: Int
             ) {
-                event.title = sequence.toString()
+                if(sequence?.length == 0) {
+                    Log.d("EventFragment", "Empty sequence")
+                } else {
+                    event.title = sequence.toString()
+                }
+
+            }
+            override fun afterTextChanged(sequence: Editable?) {
+                // This one too
+            }
+        }
+
+        val emailWatcher = object : TextWatcher {
+            override fun beforeTextChanged(
+                sequence: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+                // This space intentionally left blank
+            }
+            override fun onTextChanged(
+                sequence: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+                event.email = sequence.toString()
             }
             override fun afterTextChanged(sequence: Editable?) {
                 // This one too
@@ -72,6 +104,7 @@ class EventFragment :Fragment(), DatePickerFragment.Callbacks {
         }
 
         titleField.addTextChangedListener(titleWatcher)
+        emailField.addTextChangedListener(emailWatcher)
 
         dateButton.setOnClickListener {
             DatePickerFragment.newInstance(event.date).apply {
@@ -102,7 +135,10 @@ class EventFragment :Fragment(), DatePickerFragment.Callbacks {
     }
 
     private fun updateUI() {
+        Log.d("EventFragment", "event.title")
+        Log.d("EventFragment", event.title.length.toString())
         titleField.setText(event.title)
+        emailField.setText(event.email)
         dateButton.text = event.date.toString()
     }
 
