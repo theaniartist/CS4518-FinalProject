@@ -49,7 +49,7 @@ class CardFragment : Fragment() {
         super.onCreate(savedInstanceState)
         card = Card()
         val cardId: UUID = arguments?.getSerializable(ARG_CARD_ID) as UUID
-        cardViewModel.loadCard(cardId)
+//        cardViewModel.loadCard(cardId)
         Log.d(TAG, "onCreate() called")
     }
 
@@ -76,19 +76,19 @@ class CardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated() called")
-        cardViewModel.cardLiveData.observe(viewLifecycleOwner, { card ->
-            card?.let {
-                this.card = card
-                photoFile = cardViewModel.getPhotoFile(card)
-
-                photoUri = FileProvider.getUriForFile(
-                    requireActivity(),
-                    "com.group18.android.reminderapplication.fileprovider",
-                    photoFile
-                )
-                updateUI()
-            }
-        })
+//        cardViewModel.cardLiveData.observe(viewLifecycleOwner, { card ->
+//            card?.let {
+//                this.card = card
+//                photoFile = cardViewModel.getPhotoFile(card)
+//
+//                photoUri = FileProvider.getUriForFile(
+//                    requireActivity(),
+//                    "com.group18.android.reminderapplication.fileprovider",
+//                    photoFile
+//                )
+//                updateUI()
+//            }
+//        })
     }
 
     override fun onStart() {
@@ -204,7 +204,7 @@ class CardFragment : Fragment() {
                 it.moveToFirst()
                 val recipient = it.getString(0)
                 card.recipient = recipient
-                cardViewModel.saveCard(card)
+//                cardViewModel.saveCard(card)
                 contactButton.text = recipient
             }
         }
@@ -219,7 +219,7 @@ class CardFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         Log.d(TAG, "onStop() called")
-        cardViewModel.saveCard(card)
+//        cardViewModel.saveCard(card)
     }
 
     override fun onDetach() {

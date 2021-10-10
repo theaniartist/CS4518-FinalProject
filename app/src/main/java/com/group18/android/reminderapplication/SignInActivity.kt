@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
-import com.google.android.gms.auth.api.Auth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.group18.android.reminderapplication.databinding.ActivitySignInBinding
@@ -43,7 +42,8 @@ class SignInActivity : AppCompatActivity() {
 
 			signIn.launch(signInIntent)
 		} else {
-			goToMainActivity()
+			startActivity(Intent(this, MainActivity::class.java))
+			finish()
 		}
 	}
 
@@ -60,11 +60,6 @@ class SignInActivity : AppCompatActivity() {
 				Log.w("Sign-in error!", response.error)
 			}
 		}
-	}
-
-	private fun goToMainActivity() {
-		startActivity(Intent(this, MainActivity::class.java))
-		finish()
 	}
 
 	companion object {
