@@ -14,7 +14,7 @@ private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity(), CardListFragment.Callbacks {
     private lateinit var auth: FirebaseAuth
-    private lateinit var chatButton: Button
+//    private lateinit var chatButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,21 +27,21 @@ class MainActivity : AppCompatActivity(), CardListFragment.Callbacks {
             return
         }
 
-        chatButton = findViewById(R.id.chat_button)
-        chatButton.setOnClickListener {
-            startActivity(Intent(this, ChatActivity::class.java))
-            finish()
-        }
-        // Not using fragment temporarily to test chat
-//        val currentFragment =
-//            supportFragmentManager.findFragmentById(R.id.fragment_container)
-//        if (currentFragment == null) {
-//            val fragment = CardListFragment.newInstance()
-//            supportFragmentManager
-//                .beginTransaction()
-//                .add(R.id.fragment_container, fragment)
-//                .commit()
+//        chatButton = findViewById(R.id.chat_button)
+//        chatButton.setOnClickListener {
+//            startActivity(Intent(this, ChatActivity::class.java))
+//            finish()
 //        }
+        // Not using fragment temporarily to test chat
+        val currentFragment =
+            supportFragmentManager.findFragmentById(R.id.fragment_container)
+        if (currentFragment == null) {
+            val fragment = CardListFragment.newInstance()
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.fragment_container, fragment)
+                .commit()
+        }
     }
 
     override fun onCardSelected(cardId: UUID) {
