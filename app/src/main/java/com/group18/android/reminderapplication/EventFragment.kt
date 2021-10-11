@@ -69,12 +69,7 @@ class EventFragment :Fragment(), DatePickerFragment.Callbacks {
                 before: Int,
                 count: Int
             ) {
-                if(sequence?.length == 0) {
-                    Log.d("EventFragment", "Empty sequence")
-                } else {
-                    event.title = sequence.toString()
-                }
-
+                event.title = sequence.toString()
             }
             override fun afterTextChanged(sequence: Editable?) {
                 // This one too
