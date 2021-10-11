@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.net.Uri
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
@@ -22,20 +21,18 @@ import java.util.*
 
 private const val TAG = "CardFragment"
 private const val ARG_CARD_ID = "card_id"
-private const val REQUEST_CONTACT = 0
-private const val REQUEST_PHOTO = 1
-private const val REQUEST_CODE_CHAT = 2
-
+private const val REQUEST_PHOTO = 0
+private const val REQUEST_CODE_CHAT = 1
 
 class CardFragment : Fragment() {
 
     private lateinit var card: Card
     private lateinit var photoFile: File
     private var photoUri: Uri? = null
-    private lateinit var titleField: EditText
+    private lateinit var titleField: TextView
     private lateinit var descField: TextView
+    private lateinit var emailField: EditText
     private lateinit var messageField: EditText
-    private lateinit var contactButton: Button
     private lateinit var sendButton: Button
     private lateinit var photoButton: ImageButton
     private lateinit var photoView: ImageView
@@ -59,10 +56,10 @@ class CardFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_card, container, false)
 
-        titleField = view.findViewById(R.id.card_title_edit) as EditText
+        titleField = view.findViewById(R.id.card_title_custom) as TextView
         descField = view.findViewById(R.id.card_description) as TextView
+        emailField = view.findViewById(R.id.card_email) as EditText
         messageField = view.findViewById(R.id.card_message_edit) as EditText
-        contactButton = view.findViewById(R.id.card_contact) as Button
         sendButton = view.findViewById(R.id.card_send) as Button
         photoButton = view.findViewById(R.id.card_camera) as ImageButton
         photoView = view.findViewById(R.id.card_photo) as ImageView
@@ -93,7 +90,8 @@ class CardFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         Log.d(TAG, "onStart() called")
-        val titleWatcher = object : TextWatcher {
+
+        val emailWatcher = object : TextWatcher {
             override fun beforeTextChanged(
                 sequence: CharSequence?,
                 start: Int,
@@ -108,7 +106,7 @@ class CardFragment : Fragment() {
                 before: Int,
                 count: Int
             ) {
-                card.title = sequence.toString()
+                card.email = sequence.toString()
             }
             override fun afterTextChanged(sequence: Editable?) {
                 // This one too
@@ -137,17 +135,8 @@ class CardFragment : Fragment() {
             }
         }
 
-        titleField.addTextChangedListener(titleWatcher)
+        emailField.addTextChangedListener(emailWatcher)
         messageField.addTextChangedListener(messageWatcher)
-
-        contactButton.apply {
-            val pickContactIntent =
-                Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
-
-            setOnClickListener {
-                startActivityForResult(pickContactIntent, REQUEST_CONTACT)
-            }
-        }
 
         sendButton.setOnClickListener {
             val intent = Intent(this@CardFragment.context, ChatActivity::class.java)
@@ -187,27 +176,6 @@ class CardFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == REQUEST_CONTACT && data != null) {
-            val contactUri: Uri? = data.data
-            val queryFields = arrayOf(ContactsContract.Contacts.DISPLAY_NAME)
-
-            val cursor = contactUri?.let {
-                requireActivity().contentResolver
-                    .query(it, queryFields, null, null, null)
-            }
-            cursor?.use {
-                if (it.count == 0) {
-                    return
-                }
-
-                it.moveToFirst()
-                val recipient = it.getString(0)
-                card.recipient = recipient
-                cardViewModel.saveCard(card)
-                contactButton.text = recipient
-            }
-        }
-
         if (requestCode == REQUEST_PHOTO) {
             requireActivity().revokeUriPermission(photoUri,
                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
@@ -230,13 +198,11 @@ class CardFragment : Fragment() {
     }
 
     private fun updateUI() {
-        titleField.setText(card.title)
+        titleField.text = card.title
         descField.text = card.desc
-        messageField.setText(card.message)
+        //emailField.setText(card.email)
+        //messageField.setText(card.message)
 
-        if (card.recipient.isNotEmpty()) {
-            contactButton.text = card.recipient
-        }
         updatePhotoView()
     }
 
