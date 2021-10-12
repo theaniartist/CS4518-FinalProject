@@ -23,6 +23,9 @@ private const val TAG = "CardFragment"
 private const val ARG_CARD_ID = "card_id"
 private const val REQUEST_PHOTO = 0
 private const val REQUEST_CODE_CHAT = 1
+private const val EXTRA_PHOTO = "com.group18.android.reminderapplication.photo"
+private const val EXTRA_TEMPLATE = "com.group18.android.reminderapplication.template"
+private const val EXTRA_EMAIL = "com.group18.android.reminderapplication.email"
 
 class CardFragment : Fragment() {
 
@@ -98,8 +101,8 @@ class CardFragment : Fragment() {
                 count: Int,
                 after: Int
             ) {
-                // This space intentionally left blank
             }
+
             override fun onTextChanged(
                 sequence: CharSequence?,
                 start: Int,
@@ -108,8 +111,8 @@ class CardFragment : Fragment() {
             ) {
                 card.email = sequence.toString()
             }
+
             override fun afterTextChanged(sequence: Editable?) {
-                // This one too
             }
         }
 
@@ -120,8 +123,8 @@ class CardFragment : Fragment() {
                 count: Int,
                 after: Int
             ) {
-                // This space intentionally left blank
             }
+
             override fun onTextChanged(
                 sequence: CharSequence?,
                 start: Int,
@@ -130,8 +133,8 @@ class CardFragment : Fragment() {
             ) {
                 card.message = sequence.toString()
             }
+
             override fun afterTextChanged(sequence: Editable?) {
-                // This one too
             }
         }
 
@@ -139,7 +142,13 @@ class CardFragment : Fragment() {
         messageField.addTextChangedListener(messageWatcher)
 
         sendButton.setOnClickListener {
-            val intent = Intent(this@CardFragment.context, ChatActivity::class.java)
+            val intent = Intent(this@CardFragment.context, ChatActivity::class.java).apply {
+                //photoFile.path gets path from data/data/[our project name]/files
+                putExtra(EXTRA_PHOTO, photoFile.path)
+                //card template icon, path from URI and resID: android.resource://[project name]/resID
+                putExtra(EXTRA_TEMPLATE, getImageUriPath(card.title))
+                putExtra(EXTRA_EMAIL, card.email)
+            }
             startActivityForResult(intent, REQUEST_CODE_CHAT)
         }
 
@@ -177,8 +186,10 @@ class CardFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_PHOTO) {
-            requireActivity().revokeUriPermission(photoUri,
-                Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            requireActivity().revokeUriPermission(
+                photoUri,
+                Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            )
             updatePhotoView()
         }
     }
@@ -186,13 +197,14 @@ class CardFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         Log.d(TAG, "onStop() called")
-        cardViewModel.saveCard(card)
+        //cardViewModel.saveCard(card)
     }
 
     override fun onDetach() {
         super.onDetach()
         Log.d(TAG, "onDetach() called")
-        requireActivity().revokeUriPermission(photoUri,
+        requireActivity().revokeUriPermission(
+            photoUri,
             Intent.FLAG_GRANT_WRITE_URI_PERMISSION
         )
     }
@@ -202,7 +214,6 @@ class CardFragment : Fragment() {
         descField.text = card.desc
         //emailField.setText(card.email)
         //messageField.setText(card.message)
-
         updatePhotoView()
     }
 
@@ -213,6 +224,32 @@ class CardFragment : Fragment() {
         } else {
             photoView.setImageDrawable(null)
         }
+    }
+
+    private fun getImageUriPath(cardTitle: String) : String {
+        when (cardTitle) {
+            "Happy Birthday Card" -> { return Uri.parse("android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_birthday).toString()}
+            "Happy Anniversary Card" -> { return Uri.parse("android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_anniversary).toString()}
+            "Graduation Card" -> { return Uri.parse("android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_grad).toString()}
+            "Christmas Card" -> { return Uri.parse("android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_christmas).toString()}
+            "Happy New Year's Card" -> { return Uri.parse("android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_firework).toString()}
+            "Happy Mother's Day Card" -> { return Uri.parse("android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_mom).toString()}
+            "Happy Father's Day Card" -> { return Uri.parse("android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_dad).toString()}
+            "Valentine's Day Card" -> { return Uri.parse("android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_heart).toString()}
+            "Wedding Card" -> { return Uri.parse("android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_ring).toString()}
+            "Halloween Card" -> { return Uri.parse("android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_halloween).toString()}
+        }
+        return ""
     }
 
     companion object {
