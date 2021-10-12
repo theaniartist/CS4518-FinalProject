@@ -68,7 +68,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:inputType="text"
-        android:text="@string/card_details_label"/>
+        android:hint="@string/card_details_label"/>
 
     <EditText
         style="?android:listSeparatorTextViewStyle"
@@ -78,7 +78,7 @@
         android:layout_marginTop="100dp"
         android:layout_marginBottom="10dp"
         android:inputType="textEmailAddress"
-        android:text="@string/card_email_text" />
+        android:hint="@string/card_email_text" />
 
     <Button
         android:id="@+id/card_send"
