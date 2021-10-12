@@ -6,5 +6,6 @@ class ReminderApplication : Application() {
 	override fun onCreate() {
 		super.onCreate()
 		CardRepository.initialize(this)
+		EventRepository.initialize(this)
 	}
 }

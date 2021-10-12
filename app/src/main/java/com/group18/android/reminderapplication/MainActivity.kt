@@ -12,7 +12,7 @@ import java.util.*
 
 private const val TAG = "MainActivity"
 
-class MainActivity : AppCompatActivity(), CardListFragment.Callbacks {
+class MainActivity : AppCompatActivity(), EventListFragment.Callbacks {
     private lateinit var auth: FirebaseAuth
 //    private lateinit var chatButton: Button
 
@@ -34,22 +34,21 @@ class MainActivity : AppCompatActivity(), CardListFragment.Callbacks {
 //        }
         // Not using fragment temporarily to test chat
         val currentFragment =
-            supportFragmentManager.findFragmentById(R.id.fragment_container)
+            supportFragmentManager.findFragmentById(R.id.fragment_container_main)
         if (currentFragment == null) {
-            val fragment = CardListFragment.newInstance()
+            val fragment = EventListFragment.newInstance()
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragment_container, fragment)
+                .add(R.id.fragment_container_main, fragment)
                 .commit()
         }
     }
 
-    override fun onCardSelected(cardId: UUID) {
-        //Log.d(TAG, "MainActivity.onCardSelected: $cardId")
-        val fragment = CardFragment.newInstance(cardId)
+    override fun onEventSelected(eventId: UUID) {
+        val fragment = EventFragment.newInstance(eventId)
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragment_container, fragment)
+            .replace(R.id.fragment_container_main, fragment)
             .addToBackStack(null)
             .commit()
     }

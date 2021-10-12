@@ -44,11 +44,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/card_title_label" />
 
-            <EditText
-                android:id="@+id/card_title_edit"
+            <TextView
+                style="?android:listSeparatorTextViewStyle"
+                android:id="@+id/card_title_custom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/card_title_hint" />
+                android:hint="@string/card_title" />
         </LinearLayout>
     </LinearLayout>
 
@@ -66,16 +67,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:text="@string/card_details_label" />
+        android:inputType="text"
+        android:text="@string/card_details_label"/>
 
-    <Button
-        android:id="@+id/card_contact"
+    <EditText
+        style="?android:listSeparatorTextViewStyle"
+        android:id="@+id/card_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:backgroundTint="#BAB4EE"
-        android:text="@string/card_contact_text"
-        android:textColor="@color/black" />
+        android:layout_marginBottom="10dp"
+        android:inputType="textEmailAddress"
+        android:text="@string/card_email_text" />
 
     <Button
         android:id="@+id/card_send"

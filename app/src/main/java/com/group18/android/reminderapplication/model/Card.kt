@@ -8,6 +8,7 @@ import java.util.*
 data class Card (@PrimaryKey val id: UUID = UUID.randomUUID(),
                  var title: String = "",
                  var desc: String = "",
+                 var email: String = "",
                  var message: String = "",
                  var recipient: String = "") {
 
