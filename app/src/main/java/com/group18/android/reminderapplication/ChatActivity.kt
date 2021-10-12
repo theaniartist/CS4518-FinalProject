@@ -29,6 +29,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseDatabase
     private lateinit var adapter: MessageAdapter
+    private lateinit var messagesRef: DatabaseReference
 
     private val openDocument = registerForActivityResult(OpenDocumentContract()) { uri ->
         onImageSelected(uri)
@@ -49,15 +50,15 @@ class ChatActivity : AppCompatActivity() {
 
         db = Firebase.database
 
-        val senderEmail = auth.currentUser!!.email
-        // TODO: Get recip email from intent
-        val recipientEmail = ""
-        // TODO: arrange emails in alphabetical order
-        val email1 = ""
-        val email2 = ""
+        val photoPath = intent.getStringExtra(EXTRA_PHOTO)
+        val cardPath = intent.getStringExtra(EXTRA_TEMPLATE)
+
+        val senderEmail = auth.currentUser!!.email!!
+        val recipientEmail = intent.getStringExtra(EXTRA_EMAIL)!!
+        val email1 = if (senderEmail < recipientEmail) senderEmail else recipientEmail
+        val email2 = if (email1 == senderEmail) recipientEmail else senderEmail
         val chatRoomId = ("[$email1]/[$email2]").hashCode().toString()
-//        val messagesRef = db.reference.child(MESSAGES_CHILD).child(chatRoomId)
-        val messagesRef = db.reference.child(MESSAGES_CHILD)
+        messagesRef = db.reference.child(MESSAGES_CHILD).child(chatRoomId)
 
         val options = FirebaseRecyclerOptions.Builder<Message>()
             .setQuery(messagesRef, Message::class.java)
@@ -82,7 +83,8 @@ class ChatActivity : AppCompatActivity() {
                 getPhotoUrl(),
                 null
             )
-            db.reference.child(MESSAGES_CHILD).push().setValue(message)
+
+            messagesRef.push().setValue(message)
             binding.messageEditText.setText("")
         }
 
@@ -132,8 +134,7 @@ class ChatActivity : AppCompatActivity() {
         val user = auth.currentUser
         val tempMessage = Message(null, getUserName(), getPhotoUrl(), LOADING_IMAGE_URL)
 
-        db.reference
-            .child(MESSAGES_CHILD)
+        messagesRef
             .push()
             .setValue(
                 tempMessage,
@@ -156,7 +157,7 @@ class ChatActivity : AppCompatActivity() {
             taskSnapshot.metadata!!.reference!!.downloadUrl
                 .addOnSuccessListener { uri ->
                     val message = Message(null, getUserName(), getPhotoUrl(), uri.toString())
-                    db.reference.child(MESSAGES_CHILD).child(key!!).setValue(message)
+                    messagesRef.child(key!!).setValue(message)
                 }
         }
             .addOnFailureListener(this) { ex ->
@@ -185,5 +186,8 @@ class ChatActivity : AppCompatActivity() {
         const val MESSAGES_CHILD = "messages"
         const val ANONYMOUS = "anonymous"
         private const val LOADING_IMAGE_URL = "https://www.google.com/images/spin-32.gif"
+        private const val EXTRA_PHOTO = "com.group18.android.reminderapplication.photo"
+        private const val EXTRA_TEMPLATE = "com.group18.android.reminderapplication.template"
+        private const val EXTRA_EMAIL = "com.group18.android.reminderapplication.email"
     }
 }

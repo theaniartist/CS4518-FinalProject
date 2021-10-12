@@ -100,8 +100,7 @@ class CardFragment : Fragment() {
                 start: Int,
                 count: Int,
                 after: Int
-            ) {
-            }
+            ) {}
 
             override fun onTextChanged(
                 sequence: CharSequence?,
@@ -112,8 +111,7 @@ class CardFragment : Fragment() {
                 card.email = sequence.toString()
             }
 
-            override fun afterTextChanged(sequence: Editable?) {
-            }
+            override fun afterTextChanged(sequence: Editable?) {}
         }
 
         val messageWatcher = object : TextWatcher {
@@ -122,8 +120,7 @@ class CardFragment : Fragment() {
                 start: Int,
                 count: Int,
                 after: Int
-            ) {
-            }
+            ) {}
 
             override fun onTextChanged(
                 sequence: CharSequence?,
@@ -134,8 +131,7 @@ class CardFragment : Fragment() {
                 card.message = sequence.toString()
             }
 
-            override fun afterTextChanged(sequence: Editable?) {
-            }
+            override fun afterTextChanged(sequence: Editable?) {}
         }
 
         emailField.addTextChangedListener(emailWatcher)
