@@ -48,9 +48,17 @@ class ChatActivity : AppCompatActivity() {
         }
 
         db = Firebase.database
+
+        val senderEmail = auth.currentUser!!.email
+        // TODO: Get recip email from intent
+        val recipientEmail = ""
+        // TODO: arrange emails in alphabetical order
+        val email1 = ""
+        val email2 = ""
+        val chatRoomId = ("[$email1]/[$email2]").hashCode().toString()
+//        val messagesRef = db.reference.child(MESSAGES_CHILD).child(chatRoomId)
         val messagesRef = db.reference.child(MESSAGES_CHILD)
 
-        // TODO: figure out custom query (ie: correct sender/recipient)
         val options = FirebaseRecyclerOptions.Builder<Message>()
             .setQuery(messagesRef, Message::class.java)
             .build()
