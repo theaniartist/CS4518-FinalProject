@@ -13,4 +13,5 @@
     <string name="new_event">New Event</string>
     <string name="event_email_label">Person\'s email address for event:</string>
     <string name="event_email_edit">Enter an email address</string>
+    <string name="event_submit">Submit New Event</string>
 </resources>

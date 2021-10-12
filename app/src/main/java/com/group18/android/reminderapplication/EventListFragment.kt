@@ -19,23 +19,12 @@ private const val REQUEST_CARD = 0
 
 class EventListFragment : Fragment() {
 
-    interface Callbacks {
-        fun onEventSelected(eventId: UUID)
-    }
-    private var callbacks: Callbacks? = null
-
     private lateinit var eventRecyclerView: RecyclerView
     private var adapter: EventAdapter? = EventAdapter(emptyList())
 
     private val eventListViewModel: EventListViewModel by lazy {
         ViewModelProviders.of(this).get(EventListViewModel::class.java)
     }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callbacks = context as Callbacks?
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,11 +57,6 @@ class EventListFragment : Fragment() {
             })
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        callbacks = null
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.fragment_event_list, menu)
@@ -81,9 +65,12 @@ class EventListFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.new_event -> {
-                val event = Event()
-                eventListViewModel.addEvent(event)
-                callbacks?.onEventSelected(event.id)
+                val fragment = EventFragment()
+                requireActivity().supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_container_main, fragment)
+                    .addToBackStack(null)
+                    .commit()
                 true
             }
             else -> return super.onOptionsItemSelected(item)

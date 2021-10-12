@@ -31,4 +31,12 @@
         android:backgroundTint="#9ADDFF"
         android:textColor="@color/black"
         android:text="@string/event_date_text"/>
+    <Button
+        android:id="@+id/event_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#9ADDFF"
+        android:textColor="@color/black"
+        android:text="@string/event_submit"/>
+
 </LinearLayout>

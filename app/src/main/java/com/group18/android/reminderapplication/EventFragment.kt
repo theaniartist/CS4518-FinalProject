@@ -22,20 +22,18 @@ private const val REQUEST_DATE = 0
 
 class EventFragment :Fragment(), DatePickerFragment.Callbacks {
 
-    private lateinit var event: Event
     private lateinit var titleField: EditText
     private lateinit var emailField: EditText
     private lateinit var dateButton: Button
+    private lateinit var submitButton: Button
+
+    private var title: String = ""
+    private var email: String = ""
+    private var date: Date = Date()
+
 
     private val eventViewModel: EventViewModel by lazy {
         ViewModelProviders.of(this).get(EventViewModel::class.java)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        event = Event()
-        val eventId: UUID = arguments?.getSerializable(ARG_EVENT_ID) as UUID
-        eventViewModel.loadEvent(eventId)
     }
 
     override fun onCreateView(
@@ -48,6 +46,7 @@ class EventFragment :Fragment(), DatePickerFragment.Callbacks {
         titleField = view.findViewById(R.id.event_title_edit) as EditText
         emailField = view.findViewById(R.id.event_email) as EditText
         dateButton = view.findViewById(R.id.event_date_button) as Button
+        submitButton = view.findViewById(R.id.event_submit) as Button
 
         return view
     }
@@ -69,7 +68,7 @@ class EventFragment :Fragment(), DatePickerFragment.Callbacks {
                 before: Int,
                 count: Int
             ) {
-                event.title = sequence.toString()
+                title = sequence.toString()
             }
             override fun afterTextChanged(sequence: Editable?) {
                 // This one too
@@ -91,7 +90,7 @@ class EventFragment :Fragment(), DatePickerFragment.Callbacks {
                 before: Int,
                 count: Int
             ) {
-                event.email = sequence.toString()
+                email = sequence.toString()
             }
             override fun afterTextChanged(sequence: Editable?) {
                 // This one too
@@ -102,9 +101,24 @@ class EventFragment :Fragment(), DatePickerFragment.Callbacks {
         emailField.addTextChangedListener(emailWatcher)
 
         dateButton.setOnClickListener {
-            DatePickerFragment.newInstance(event.date).apply {
+            DatePickerFragment.newInstance(date).apply {
                 setTargetFragment(this@EventFragment, REQUEST_DATE)
                 show(this@EventFragment.requireFragmentManager(), DIALOG_DATE)
+            }
+        }
+
+        submitButton.setOnClickListener {
+            var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+            if(title.isEmpty() || email.isEmpty()) {
+                Toast.makeText(requireActivity().applicationContext, "Please enter a title and an email", Toast.LENGTH_SHORT).show()
+            } else {
+                if(email.matches(emailPattern.toRegex())) {
+                    val event = Event(UUID.randomUUID(), title, email, date)
+                    eventViewModel.addEvent(event)
+                    requireActivity().supportFragmentManager.popBackStack()
+                } else {
+                    Toast.makeText(requireActivity().applicationContext, "Please enter a valid email", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -113,38 +127,19 @@ class EventFragment :Fragment(), DatePickerFragment.Callbacks {
         super.onViewCreated(view, savedInstanceState)
         eventViewModel.eventLiveData.observe(viewLifecycleOwner, { event ->
             event?.let {
-                this.event = event
                 updateUI()
             }
         })
     }
 
-    override fun onStop() {
-        super.onStop()
-        eventViewModel.saveEvent(event)
-    }
-
     override fun onDateSelected(date: Date) {
-        event.date = date
+        this.date = date
         updateUI()
     }
 
     private fun updateUI() {
-        Log.d("EventFragment", "event.title")
-        Log.d("EventFragment", event.title.length.toString())
-        titleField.setText(event.title)
-        emailField.setText(event.email)
-        dateButton.text = event.date.toString()
-    }
-
-    companion object {
-        fun newInstance(crimeId: UUID): EventFragment {
-            val args = Bundle().apply {
-                putSerializable(ARG_EVENT_ID, crimeId)
-            }
-            return EventFragment().apply {
-                arguments = args
-            }
-        }
+        titleField.setText(title)
+        emailField.setText(email)
+        dateButton.text = date.toString()
     }
 }

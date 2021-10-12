@@ -1,5 +1,6 @@
 package com.group18.android.reminderapplication
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -15,11 +16,7 @@ class EventViewModel: ViewModel() {
             eventRepository.getEvent(eventId)
         }
 
-    fun loadEvent(eventId: UUID) {
-        eventIdLiveData.value = eventId
-    }
-
-    fun saveEvent(event: Event) {
-        eventRepository.updateEvent(event)
+    fun addEvent(event: Event) {
+        eventRepository.addEvent(event)
     }
 }

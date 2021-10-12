@@ -6,7 +6,7 @@ import java.util.*
 
 private const val TAG = "MainActivity"
 
-class MainActivity : AppCompatActivity(), EventListFragment.Callbacks {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,14 +21,5 @@ class MainActivity : AppCompatActivity(), EventListFragment.Callbacks {
                 .add(R.id.fragment_container_main, fragment)
                 .commit()
         }
-    }
-
-    override fun onEventSelected(eventId: UUID) {
-        val fragment = EventFragment.newInstance(eventId)
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container_main, fragment)
-            .addToBackStack(null)
-            .commit()
     }
 }
