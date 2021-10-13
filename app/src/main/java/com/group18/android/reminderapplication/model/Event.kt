@@ -1,4 +1,4 @@
-package com.group18.android.reminderapplication
+package com.group18.android.reminderapplication.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

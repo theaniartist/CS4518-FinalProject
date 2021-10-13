@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.Observer
+import com.group18.android.reminderapplication.model.Event
 import java.util.*
 
 private const val TAG = "EventListFragment"

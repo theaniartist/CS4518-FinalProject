@@ -1,18 +1,9 @@
 package com.group18.android.reminderapplication.model
 
-class Message {
-	var text: String? = null
-	var name: String? = null
-	var photoUrl: String? = null
-	var imageUrl: String? = null
+import com.google.firebase.database.IgnoreExtraProperties
 
-	// Empty constructor needed for Firebase serialization
-	constructor()
-
-	constructor(text: String?, name: String?, photoUrl: String?, imageUrl: String?) {
-		this.text = text
-		this.name = name
-		this.photoUrl = photoUrl
-		this.imageUrl = imageUrl
-	}
-}
+@IgnoreExtraProperties
+data class Message(val text: String? = null,
+				   val name: String? = null,
+				   val photoUrl: String? = null,
+				   val imageUrl: String? = null)

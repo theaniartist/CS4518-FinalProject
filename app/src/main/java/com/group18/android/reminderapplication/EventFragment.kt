@@ -2,9 +2,7 @@ package com.group18.android.reminderapplication
 
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.group18.android.reminderapplication.model.Event
 import java.util.*
 
 private const val TAG = "EventFragment"

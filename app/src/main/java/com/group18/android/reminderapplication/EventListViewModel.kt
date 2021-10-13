@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
+import com.group18.android.reminderapplication.model.Event
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -16,7 +17,7 @@ class EventListViewModel :ViewModel() {
 
     init {
         // Uncomment to generate a new set of dummy data
-        generateDataset()
+        //generateDataset()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

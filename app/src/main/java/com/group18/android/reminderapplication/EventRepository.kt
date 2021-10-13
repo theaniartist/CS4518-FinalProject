@@ -3,6 +3,7 @@ package com.group18.android.reminderapplication
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
+import com.group18.android.reminderapplication.model.Event
 import com.group18.android.reminderapplication.database.EventDatabase
 import java.util.*
 import java.util.concurrent.Executors
