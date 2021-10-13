@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Reminder Application</string>
     <string name="card_title_label">Title</string>
-    <string name="card_title_hint">Enter a title</string>
+    <string name="card_title">Card Title</string>
     <string name="card_description">Card Description</string>
     <string name="card_details_label">Enter your message here</string>
-    <string name="card_contact_text">Choose a Contact</string>
+    <string name="card_email_text">Enter email address</string>
     <string name="card_message_text">Send Message</string>
     <string name="event_title_label">Title</string>
     <string name="event_title_edit">Enter a title</string>
@@ -14,4 +14,10 @@
     <string name="event_email_label">Person\'s email address for event:</string>
     <string name="event_email_edit">Enter an email address</string>
     <string name="event_submit">Submit New Event</string>
+    <string name="welcome_msg">Welcome!</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="contacts_permission_rationale">Access to account information is required to sign in.</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="message_prompt">Write a message…</string>
 </resources>

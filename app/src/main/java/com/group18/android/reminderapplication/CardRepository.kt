@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.group18.android.reminderapplication.database.CardDatabase
+import com.group18.android.reminderapplication.model.Card
 import java.io.File
 import java.lang.IllegalStateException
 import java.util.*

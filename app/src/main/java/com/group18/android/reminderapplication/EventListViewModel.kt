@@ -1,5 +1,8 @@
 package com.group18.android.reminderapplication
 
+import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import java.time.LocalDate
 import java.time.ZoneId
@@ -20,6 +23,7 @@ class EventListViewModel :ViewModel() {
         eventRepository.addEvent(event)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun generateDataset() {
         val arrayTitle = arrayOf("Birthday", "Anniversary",
             "Graduation", "Christmas", "New Year's", "Mother's Day",
@@ -32,6 +36,7 @@ class EventListViewModel :ViewModel() {
         }
     }
 
+    @SuppressLint("NewApi")
     private fun generateDate(title: String): Date {
         val defaultZoneId: ZoneId = ZoneId.systemDefault()
         val randomMonth = kotlin.random.Random.nextInt(1, 12)
