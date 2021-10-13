@@ -13,7 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.group18.android.reminderapplication.model.Card
@@ -31,7 +30,7 @@ private const val EXTRA_MESSAGE = "com.group18.android.reminderapplication.messa
 
 class CardFragment : Fragment() {
     private lateinit var card: Card
-    private lateinit var photoFile: File
+    private var photoFile: File? = null
     private var photoUri: Uri? = null
     private lateinit var titleField: TextView
     private lateinit var descField: TextView
@@ -79,13 +78,6 @@ class CardFragment : Fragment() {
         cardViewModel.cardLiveData.observe(viewLifecycleOwner, { card ->
             card?.let {
                 this.card = card
-                photoFile = cardViewModel.getPhotoFile(card)
-
-                photoUri = FileProvider.getUriForFile(
-                    requireActivity(),
-                    "com.group18.android.reminderapplication.fileprovider",
-                    photoFile
-                )
                 updateUI()
             }
         })
@@ -115,7 +107,7 @@ class CardFragment : Fragment() {
             override fun afterTextChanged(sequence: Editable?) {}
         }
 
-        val messageWatcher = object : TextWatcher {
+        val messageWatcher = object: TextWatcher {
             override fun beforeTextChanged(
                 sequence: CharSequence?,
                 start: Int,
@@ -146,7 +138,9 @@ class CardFragment : Fragment() {
                 if(card.email.matches(emailPattern.toRegex())) {
                     val intent = Intent(this@CardFragment.context, ChatActivity::class.java).apply {
                         //photoFile.path gets path from data/data/[our project name]/files
-                        putExtra(EXTRA_PHOTO, photoFile.path)
+                        if (photoFile != null) {
+                            putExtra(EXTRA_PHOTO, photoFile!!.path)
+                        }
                         //card template icon, path from URI and resID: android.resource://[project name]/resID
                         putExtra(EXTRA_TEMPLATE, getImageUriPath(card.title))
                         putExtra(EXTRA_EMAIL, card.email)
@@ -224,8 +218,10 @@ class CardFragment : Fragment() {
     }
 
     private fun updatePhotoView() {
-        if (photoFile.exists()) {
-            val bitmap = getScaledBitmap(photoFile.path, requireActivity())
+        if (photoFile?.exists() == true) {
+            val bitmap = photoFile?.path?.let {
+                getScaledBitmap(it, requireActivity())
+            }
             photoView.setImageBitmap(bitmap)
         } else {
             photoView.setImageDrawable(null)

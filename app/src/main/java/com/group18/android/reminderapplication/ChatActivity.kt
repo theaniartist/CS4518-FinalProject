@@ -32,10 +32,6 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var adapter: MessageAdapter
     private lateinit var messagesRef: DatabaseReference
 
-//    private val openDocument = registerForActivityResult(OpenDocumentContract()) { uri ->
-//        onImageSelected(uri)
-//    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -68,36 +64,28 @@ class ChatActivity : AppCompatActivity() {
         binding.messageRecyclerView.layoutManager = manager
         binding.messageRecyclerView.adapter = adapter
 
-        adapter.registerAdapterDataObserver(
-            ScrollToBottomObserver(binding.messageRecyclerView, adapter, manager)
-        )
-
+        adapter.registerAdapterDataObserver(ScrollToBottomObserver(binding.messageRecyclerView, adapter, manager))
         binding.messageEditText.addTextChangedListener(ButtonObserver(binding.sendButton))
 
         binding.sendButton.setOnClickListener {
-            val message = Message(
-                binding.messageEditText.text.toString(),
-                getUserName(),
-                getPhotoUrl(),
-                null
-            )
-
-            messagesRef.push().setValue(message)
+            sendTextMessage(binding.messageEditText.text.toString())
             binding.messageEditText.setText("")
         }
 
-        val cardPath = intent.getStringExtra(EXTRA_TEMPLATE)
-        if (cardPath != null) {
-            val cardUri = Uri.parse(cardPath)
-            Log.d(TAG, "card path: $cardPath")
-            onImageSelected(cardUri)
-        }
+        val cardPath = intent.getStringExtra(EXTRA_TEMPLATE)!!
+        val cardUri = Uri.parse(cardPath)
+        sendImageMessage(cardUri)
 
         val photoPath = intent.getStringExtra(EXTRA_PHOTO)
-        if (photoPath != null) {
+        if (!photoPath.isNullOrEmpty()) {
+            Log.d(TAG, photoPath.toString())
             val photoUri = Uri.fromFile(File(photoPath))
-            Log.d(TAG, "photo path: $photoPath")
-            onImageSelected(photoUri)
+            sendImageMessage(photoUri)
+        }
+
+        val messageText = intent.getStringExtra(EXTRA_MESSAGE)
+        if (messageText != null) {
+            sendTextMessage(messageText)
         }
     }
 
@@ -137,8 +125,12 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    private fun onImageSelected(uri: Uri) {
-        Log.d(TAG, "Uri: $uri")
+    private fun sendTextMessage(text: String) {
+        val message = Message(text, getUserName(), getPhotoUrl(), null)
+        messagesRef.push().setValue(message)
+    }
+
+    private fun sendImageMessage(uri: Uri) {
         val user = auth.currentUser
         val tempMessage = Message(null, getUserName(), getPhotoUrl(), LOADING_IMAGE_URL)
 
@@ -153,11 +145,11 @@ class ChatActivity : AppCompatActivity() {
                         return@CompletionListener
                     }
 
-                    // Build a StorageReference and then upload the file
                     val key = databaseReference.key
                     val storageReference = Firebase.storage.getReference(user!!.uid).child(key!!).child(uri.lastPathSegment!!)
                     putImageInStorage(storageReference, uri, key)
-                })
+                }
+            )
     }
 
     private fun putImageInStorage(storageReference: StorageReference, uri: Uri, key: String?) {
@@ -197,5 +189,6 @@ class ChatActivity : AppCompatActivity() {
         private const val EXTRA_PHOTO = "com.group18.android.reminderapplication.photo"
         private const val EXTRA_TEMPLATE = "com.group18.android.reminderapplication.template"
         private const val EXTRA_EMAIL = "com.group18.android.reminderapplication.email"
+        private const val EXTRA_MESSAGE = "com.group18.android.reminderapplication.message"
     }
 }
