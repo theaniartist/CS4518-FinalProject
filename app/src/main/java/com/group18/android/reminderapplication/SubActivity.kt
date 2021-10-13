@@ -2,6 +2,7 @@ package com.group18.android.reminderapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import java.util.*
 
 class SubActivity : AppCompatActivity(), CardListFragment.Callbacks {
@@ -21,12 +22,17 @@ class SubActivity : AppCompatActivity(), CardListFragment.Callbacks {
     }
 
     override fun onCardSelected(cardId: UUID) {
-        //Log.d(TAG, "MainActivity.onCardSelected: $cardId")
-        val fragment = CardFragment.newInstance(cardId)
+
+        val email = intent.getStringExtra(EXTRA_EMAIL)!!
+
+        val fragment = CardFragment.newInstance(cardId, email)
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container_sub, fragment)
             .addToBackStack(null)
             .commit()
+    }
+    companion object {
+        private const val EXTRA_EMAIL = "com.group18.android.reminderapplication.email"
     }
 }

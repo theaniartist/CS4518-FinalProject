@@ -1,11 +1,9 @@
 package com.group18.android.reminderapplication
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -16,6 +14,7 @@ import java.util.*
 
 private const val TAG = "EventListFragment"
 private const val REQUEST_CARD = 0
+private const val EXTRA_EMAIL = "com.group18.android.reminderapplication.email"
 
 class EventListFragment : Fragment() {
 
@@ -90,7 +89,6 @@ class EventListFragment : Fragment() {
         private val titleTextView: TextView = itemView.findViewById(R.id.event_title)
         private val emailTextView: TextView = itemView.findViewById(R.id.event_email)
         private val dateTextView: TextView = itemView.findViewById(R.id.event_date)
-        private val eventImageView:ImageView = itemView.findViewById(R.id.event_view)
 
         init {
             itemView.setOnClickListener(this)
@@ -104,8 +102,9 @@ class EventListFragment : Fragment() {
         }
 
         override fun onClick(v: View) {
-            eventImageView.setImageResource(R.drawable.ic_check)
-            val intent = Intent(this@EventListFragment.context, SubActivity::class.java)
+            val intent = Intent(this@EventListFragment.context, SubActivity::class.java).apply {
+                putExtra(EXTRA_EMAIL, emailTextView.text.toString())
+            }
             startActivityForResult(intent, REQUEST_CARD)
         }
     }

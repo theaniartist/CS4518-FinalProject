@@ -21,6 +21,7 @@ import java.util.*
 
 private const val TAG = "CardFragment"
 private const val ARG_CARD_ID = "card_id"
+private const val ARG_CARD_EMAIL = "card_email"
 private const val REQUEST_PHOTO = 0
 private const val REQUEST_CODE_CHAT = 1
 private const val EXTRA_PHOTO = "com.group18.android.reminderapplication.photo"
@@ -34,7 +35,6 @@ class CardFragment : Fragment() {
     private var photoUri: Uri? = null
     private lateinit var titleField: TextView
     private lateinit var descField: TextView
-    private lateinit var emailField: EditText
     private lateinit var messageField: EditText
     private lateinit var sendButton: Button
     private lateinit var photoButton: ImageButton
@@ -48,6 +48,9 @@ class CardFragment : Fragment() {
         super.onCreate(savedInstanceState)
         card = Card()
         val cardId: UUID = arguments?.getSerializable(ARG_CARD_ID) as UUID
+        val cardEmail: String = arguments?.getSerializable(ARG_CARD_EMAIL) as String
+        card.email = cardEmail
+        Log.d(TAG, card.email)
         cardViewModel.loadCard(cardId)
         Log.d(TAG, "onCreate() called")
     }
@@ -61,7 +64,6 @@ class CardFragment : Fragment() {
 
         titleField = view.findViewById(R.id.card_title_custom) as TextView
         descField = view.findViewById(R.id.card_description) as TextView
-        emailField = view.findViewById(R.id.card_email) as EditText
         messageField = view.findViewById(R.id.card_message_edit) as EditText
         sendButton = view.findViewById(R.id.card_send) as Button
         photoButton = view.findViewById(R.id.card_camera) as ImageButton
@@ -87,27 +89,7 @@ class CardFragment : Fragment() {
         super.onStart()
         Log.d(TAG, "onStart() called")
 
-        val emailWatcher = object : TextWatcher {
-            override fun beforeTextChanged(
-                sequence: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {}
-
-            override fun onTextChanged(
-                sequence: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-                card.email = sequence.toString()
-            }
-
-            override fun afterTextChanged(sequence: Editable?) {}
-        }
-
-        val messageWatcher = object: TextWatcher {
+        val messageWatcher = object : TextWatcher {
             override fun beforeTextChanged(
                 sequence: CharSequence?,
                 start: Int,
@@ -127,10 +109,10 @@ class CardFragment : Fragment() {
             override fun afterTextChanged(sequence: Editable?) {}
         }
 
-        emailField.addTextChangedListener(emailWatcher)
         messageField.addTextChangedListener(messageWatcher)
 
         sendButton.setOnClickListener {
+            Log.d(TAG, card.email)
             val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
             if(card.email.isEmpty()) {
                 Toast.makeText(requireActivity().applicationContext, "Please enter an email", Toast.LENGTH_SHORT).show()
@@ -212,8 +194,6 @@ class CardFragment : Fragment() {
     private fun updateUI() {
         titleField.text = card.title
         descField.text = card.desc
-        //emailField.setText(card.email)
-        //messageField.setText(card.message)
         updatePhotoView()
     }
 
@@ -255,9 +235,10 @@ class CardFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(cardId: UUID): CardFragment {
+        fun newInstance(cardId: UUID, cardEmail: String): CardFragment {
             val args = Bundle().apply {
                 putSerializable(ARG_CARD_ID, cardId)
+                putSerializable(ARG_CARD_EMAIL, cardEmail)
             }
             return CardFragment().apply {
                 arguments = args

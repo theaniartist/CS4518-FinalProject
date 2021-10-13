@@ -16,7 +16,6 @@ import androidx.lifecycle.ViewModelProviders
 import java.util.*
 
 private const val TAG = "EventFragment"
-private const val ARG_EVENT_ID = "event_id"
 private const val DIALOG_DATE = "DialogDate"
 private const val REQUEST_DATE = 0
 
@@ -30,7 +29,6 @@ class EventFragment :Fragment(), DatePickerFragment.Callbacks {
     private var title: String = ""
     private var email: String = ""
     private var date: Date = Date()
-
 
     private val eventViewModel: EventViewModel by lazy {
         ViewModelProviders.of(this).get(EventViewModel::class.java)
@@ -108,7 +106,7 @@ class EventFragment :Fragment(), DatePickerFragment.Callbacks {
         }
 
         submitButton.setOnClickListener {
-            var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+            val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
             if(title.isEmpty() || email.isEmpty()) {
                 Toast.makeText(requireActivity().applicationContext, "Please enter a title and an email", Toast.LENGTH_SHORT).show()
             } else {
