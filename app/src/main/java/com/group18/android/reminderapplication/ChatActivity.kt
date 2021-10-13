@@ -21,6 +21,7 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import com.group18.android.reminderapplication.databinding.ActivityChatBinding
 import com.group18.android.reminderapplication.model.Message
+import java.io.File
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBinding
@@ -31,9 +32,9 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var adapter: MessageAdapter
     private lateinit var messagesRef: DatabaseReference
 
-    private val openDocument = registerForActivityResult(OpenDocumentContract()) { uri ->
-        onImageSelected(uri)
-    }
+//    private val openDocument = registerForActivityResult(OpenDocumentContract()) { uri ->
+//        onImageSelected(uri)
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,9 +50,6 @@ class ChatActivity : AppCompatActivity() {
         }
 
         db = Firebase.database
-
-        val photoPath = intent.getStringExtra(EXTRA_PHOTO)
-        val cardPath = intent.getStringExtra(EXTRA_TEMPLATE)
 
         val senderEmail = auth.currentUser!!.email!!
         val recipientEmail = intent.getStringExtra(EXTRA_EMAIL)!!
@@ -88,8 +86,18 @@ class ChatActivity : AppCompatActivity() {
             binding.messageEditText.setText("")
         }
 
-        binding.addMessageImageView.setOnClickListener {
-            openDocument.launch(arrayOf("image/*"))
+        val cardPath = intent.getStringExtra(EXTRA_TEMPLATE)
+        if (cardPath != null) {
+            val cardUri = Uri.parse(cardPath)
+            Log.d(TAG, "card path: $cardPath")
+            onImageSelected(cardUri)
+        }
+
+        val photoPath = intent.getStringExtra(EXTRA_PHOTO)
+        if (photoPath != null) {
+            val photoUri = Uri.fromFile(File(photoPath))
+            Log.d(TAG, "photo path: $photoPath")
+            onImageSelected(photoUri)
         }
     }
 

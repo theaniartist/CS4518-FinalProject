@@ -193,7 +193,6 @@ class CardFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         Log.d(TAG, "onStop() called")
-        //cardViewModel.saveCard(card)
     }
 
     override fun onDetach() {
@@ -224,26 +223,26 @@ class CardFragment : Fragment() {
 
     private fun getImageUriPath(cardTitle: String) : String {
         when (cardTitle) {
-            "Happy Birthday Card" -> { return Uri.parse("android.resource://" +
-                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_birthday).toString()}
-            "Happy Anniversary Card" -> { return Uri.parse("android.resource://" +
-                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_anniversary).toString()}
-            "Graduation Card" -> { return Uri.parse("android.resource://" +
-                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_grad).toString()}
-            "Christmas Card" -> { return Uri.parse("android.resource://" +
-                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_christmas).toString()}
-            "Happy New Year's Card" -> { return Uri.parse("android.resource://" +
-                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_firework).toString()}
-            "Happy Mother's Day Card" -> { return Uri.parse("android.resource://" +
-                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_mom).toString()}
-            "Happy Father's Day Card" -> { return Uri.parse("android.resource://" +
-                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_dad).toString()}
-            "Valentine's Day Card" -> { return Uri.parse("android.resource://" +
-                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_heart).toString()}
-            "Wedding Card" -> { return Uri.parse("android.resource://" +
-                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_ring).toString()}
-            "Halloween Card" -> { return Uri.parse("android.resource://" +
-                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_halloween).toString()}
+            "Happy Birthday Card" -> { return "android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_birthday}
+            "Happy Anniversary Card" -> { return "android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_anniversary}
+            "Graduation Card" -> { return "android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_grad}
+            "Christmas Card" -> { return "android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_christmas}
+            "Happy New Year's Card" -> { return "android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_firework}
+            "Happy Mother's Day Card" -> { return "android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_mom}
+            "Happy Father's Day Card" -> { return "android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_dad}
+            "Valentine's Day Card" -> { return "android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_heart}
+            "Wedding Card" -> { return "android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_ring}
+            "Halloween Card" -> { return "android.resource://" +
+                    BuildConfig.APPLICATION_ID + "/" + R.drawable.ic_halloween}
         }
         return ""
     }
