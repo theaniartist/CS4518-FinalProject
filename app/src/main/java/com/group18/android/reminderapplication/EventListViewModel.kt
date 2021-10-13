@@ -16,7 +16,7 @@ class EventListViewModel :ViewModel() {
 
     init {
         // Uncomment to generate a new set of dummy data
-//        generateDataset()
+        //generateDataset()
     }
 
     fun addEvent(event: Event) {

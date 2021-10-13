@@ -11,7 +11,7 @@ class CardListViewModel : ViewModel() {
     //Only using this dummy database for now before switching over to non-relational DB
     init {
         // Uncomment to generate a new set of dummy data
-//        generateDataset()
+        //generateDataset()
     }
 
     private fun generateDataset() {

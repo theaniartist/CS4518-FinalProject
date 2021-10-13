@@ -27,6 +27,7 @@ private const val REQUEST_CODE_CHAT = 1
 private const val EXTRA_PHOTO = "com.group18.android.reminderapplication.photo"
 private const val EXTRA_TEMPLATE = "com.group18.android.reminderapplication.template"
 private const val EXTRA_EMAIL = "com.group18.android.reminderapplication.email"
+private const val EXTRA_MESSAGE = "com.group18.android.reminderapplication.message"
 
 class CardFragment : Fragment() {
     private lateinit var card: Card
@@ -138,14 +139,24 @@ class CardFragment : Fragment() {
         messageField.addTextChangedListener(messageWatcher)
 
         sendButton.setOnClickListener {
-            val intent = Intent(this@CardFragment.context, ChatActivity::class.java).apply {
-                //photoFile.path gets path from data/data/[our project name]/files
-                putExtra(EXTRA_PHOTO, photoFile.path)
-                //card template icon, path from URI and resID: android.resource://[project name]/resID
-                putExtra(EXTRA_TEMPLATE, getImageUriPath(card.title))
-                putExtra(EXTRA_EMAIL, card.email)
+            val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+            if(card.email.isEmpty()) {
+                Toast.makeText(requireActivity().applicationContext, "Please enter an email", Toast.LENGTH_SHORT).show()
+            } else {
+                if(card.email.matches(emailPattern.toRegex())) {
+                    val intent = Intent(this@CardFragment.context, ChatActivity::class.java).apply {
+                        //photoFile.path gets path from data/data/[our project name]/files
+                        putExtra(EXTRA_PHOTO, photoFile.path)
+                        //card template icon, path from URI and resID: android.resource://[project name]/resID
+                        putExtra(EXTRA_TEMPLATE, getImageUriPath(card.title))
+                        putExtra(EXTRA_EMAIL, card.email)
+                        putExtra(EXTRA_MESSAGE, card.message)
+                    }
+                    startActivityForResult(intent, REQUEST_CODE_CHAT)
+                } else {
+                    Toast.makeText(requireActivity().applicationContext, "Please enter a valid email", Toast.LENGTH_SHORT).show()
+                }
             }
-            startActivityForResult(intent, REQUEST_CODE_CHAT)
         }
 
         photoButton.apply {
