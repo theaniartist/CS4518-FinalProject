@@ -16,11 +16,7 @@ class EventListViewModel :ViewModel() {
 
     init {
         // Uncomment to generate a new set of dummy data
-        //generateDataset()
-    }
-
-    fun addEvent(event: Event) {
-        eventRepository.addEvent(event)
+        generateDataset()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -42,10 +38,6 @@ class EventListViewModel :ViewModel() {
         val randomMonth = kotlin.random.Random.nextInt(1, 12)
         val randomDate = kotlin.random.Random.nextInt(1, 31)
         val randomYear = kotlin.random.Random.nextInt(2021, 2022)
-        //Not sure if we need time, probably look for a way to implement that if we want it
-        val randomHour = kotlin.random.Random.nextInt(0, 23)
-        val randomMin = kotlin.random.Random.nextInt(0, 59)
-        val randomSec = kotlin.random.Random.nextInt(0, 59)
 
         when (title) {
             "Valentine's Day" -> {
@@ -102,8 +94,6 @@ class EventListViewModel :ViewModel() {
         }
 
         val strDate = "$randomMonth ${randomDate}, $randomYear"
-        //val dateTime = LocalDateTime.now()
-        //val date = dateTime.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL))
         val formatter = DateTimeFormatter.ofPattern("M d, yyyy", Locale.ENGLISH)
         val localDate = LocalDate.parse(strDate, formatter)
         return Date.from(localDate.atStartOfDay(defaultZoneId).toInstant())

@@ -10,7 +10,7 @@ class CardListViewModel : ViewModel() {
 
     init {
         // Uncomment to generate a new set cards
-        //generateDataset()
+        generateDataset()
     }
 
     private fun generateDataset() {
