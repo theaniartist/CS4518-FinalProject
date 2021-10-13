@@ -140,7 +140,6 @@ class CardFragment : Fragment() {
 
         sendButton.setOnClickListener {
             val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-
             if(card.email.isEmpty()) {
                 Toast.makeText(requireActivity().applicationContext, "Please enter an email", Toast.LENGTH_SHORT).show()
             } else {
