@@ -78,7 +78,6 @@ class ChatActivity : AppCompatActivity() {
 
         val photoPath = intent.getStringExtra(EXTRA_PHOTO)
         if (!photoPath.isNullOrEmpty()) {
-            Log.d(TAG, photoPath.toString())
             val photoUri = Uri.fromFile(File(photoPath))
             sendImageMessage(photoUri)
         }

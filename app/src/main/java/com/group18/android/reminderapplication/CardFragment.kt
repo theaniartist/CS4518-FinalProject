@@ -39,6 +39,7 @@ class CardFragment : Fragment() {
     private lateinit var sendButton: Button
     private lateinit var photoButton: ImageButton
     private lateinit var photoView: ImageView
+    private lateinit var eventEmail: String
 
     private val cardViewModel: CardViewModel by lazy {
         ViewModelProvider(this).get(CardViewModel::class.java)
@@ -48,9 +49,7 @@ class CardFragment : Fragment() {
         super.onCreate(savedInstanceState)
         card = Card()
         val cardId: UUID = arguments?.getSerializable(ARG_CARD_ID) as UUID
-        val cardEmail: String = arguments?.getSerializable(ARG_CARD_EMAIL) as String
-        card.email = cardEmail
-        Log.d(TAG, card.email)
+        eventEmail = arguments?.getSerializable(ARG_CARD_EMAIL) as String
         cardViewModel.loadCard(cardId)
         Log.d(TAG, "onCreate() called")
     }
@@ -119,13 +118,12 @@ class CardFragment : Fragment() {
         messageField.addTextChangedListener(messageWatcher)
 
         sendButton.setOnClickListener {
-            Log.d(TAG, card.email)
             val intent = Intent(this@CardFragment.context, ChatActivity::class.java).apply {
                 //photoFile.path gets path from data/data/[our project name]/files
                 putExtra(EXTRA_PHOTO, photoFile.path)
                 //card template icon, path from URI and resID: android.resource://[project name]/resID
                 putExtra(EXTRA_TEMPLATE, getImageUriPath(card.title))
-                putExtra(EXTRA_EMAIL, card.email)
+                putExtra(EXTRA_EMAIL, eventEmail)
                 putExtra(EXTRA_MESSAGE, card.message)
             }
             startActivity(intent)
@@ -192,10 +190,8 @@ class CardFragment : Fragment() {
     }
 
     private fun updatePhotoView() {
-        if (photoFile?.exists() == true) {
-            val bitmap = photoFile?.path?.let {
-                getScaledBitmap(it, requireActivity())
-            }
+        if (photoFile.exists()) {
+            val bitmap = getScaledBitmap(photoFile.path, requireActivity())
             photoView.setImageBitmap(bitmap)
         } else {
             photoView.setImageDrawable(null)
